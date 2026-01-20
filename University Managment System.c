@@ -35,10 +35,7 @@ typedef struct Student{
 void addstudent(Student student[]){
     int i,j;
 
-    for(i=1;i<=3;i++){
-
-        student[i].totalmarks=0;
-
+    for(i=0;i<2;i++){
         printf("Enter the roll no:");
         scanf("%d",&student[i].rollno);
 
@@ -54,7 +51,7 @@ void addstudent(Student student[]){
         printf("Enter the email:");
         scanf("%s",&student[i].email);
 
-        for(int j=1;j<=3;j++){
+        for(j=0;j<3;j++){
             printf("Enter the Event name:");
             scanf("%s",&student[i].event[j].Eventname);
 
@@ -66,18 +63,33 @@ void addstudent(Student student[]){
 
             printf("Marks Obtained:");
             scanf("%d",&student[i].event[j].score.score);
-
-
-            student[i].totalmarks=student[i].totalmarks+student[i].event[j].score.score;
         }
-         student[i].avg=(float)student[i].totalmarks/3;
+    }
+}
 
-         if(student[i].avg>=90){
-            student[i].grade='A';
-         }else if(student[i].avg>=80||student[i].avg<=40){
-            student[i].grade='B';
-         }
-         else student[i].grade='C';
+void report(Student student[]){
+    int i,j;
+    for(i=0;i<2;i++){
+        student[i].totalmarks=0;
+        for(j=0;j<3;j++){
+            student[i].totalmarks=student[i].totalmarks + student[i].event[j].score.score;
+        }
+        student[i].avg=(float)student[i].totalmarks/3;
+
+        if(student[i].avg >= 90){
+            student[i].grade = 'A';
+        }
+        else if(student[i].avg >= 80){
+            student[i].grade = 'B';
+        }
+        else
+            student[i].grade = 'C';
+
+        printf("%s\t%d\t%f\t%c\n",
+               student[i].name,
+               student[i].totalmarks,
+               student[i].avg,
+               student[i].grade);
     }
 }
 
@@ -85,8 +97,8 @@ void sort(Student student[]){
     int i,j;
     Student temp;
 
-for(i=0;i<=3-1;i++){
-    for(j=i+1;j<=3;j++){
+for(i=0;i<2;i++){
+    for(j=i+1;j<2;j++){
         if(student[i].totalmarks<student[j].totalmarks){
             temp=student[i];
             student[i]=student[j];
@@ -96,32 +108,43 @@ for(i=0;i<=3-1;i++){
 }
 }
 
-
-void display(Student student[]){
-int i,j;
-for(i=1;i<=3;i++){
-    printf("Roll No:%d\n",student[i].rollno);
-    printf("Name:%s\n",student[i].name);
-    printf("Age:%d\n",student[i].age);
-    printf("%s\n",student[i].phone);
-    printf("%s\n",student[i].email);
-}
-}
-
 void leaderboard(Student student[]){
     int i;
-    for(i=1;i<=3;i++){
+    for(i=0;i<2;i++){
         printf("%s\t",student[i].name);
         printf("%d\n",student[i].totalmarks);
     }
 }
 
+void search(Student student[],int rollno){
+    int i,j;
+    int found=0;
+    for(i=0;i<2;i++){
+        if(student[i].rollno==rollno){
+            found=1;
+            printf("Roll No:%d\n",student[i].rollno);
+            printf("Name: %s\n", student[i].name);
+            printf("Age: %d\n", student[i].age);
+            printf("Phone: %s\n", student[i].phone);
+            printf("Email: %s\n", student[i].email);
+            printf("Total: %d\n", student[i].totalmarks);
+            printf("Average: %.2f\n", student[i].avg);
+            printf("Grade: %c\n", student[i].grade);
+            break;
+        }
+    }
+    if(found!=1){
+        printf("Do not exist");
+    }
+}
+
 void  main(){
-    Student student[3];
+    Student student[2];
 
     addstudent(student);
+    report(student);
+    search(student,12);
     sort(student);
-    display(student);
     leaderboard(student);
     
 
